@@ -1,35 +1,35 @@
 bl_info = {
-    "name":         "OGL Lib Mesh Format",
+    "name":         "OGL Lib Animated Mesh Format",
     "author":       "Tyler Schicke",
     "blender":      (2, 6, 2),
     "version":      (0, 0, 1),
     "location":     "File > Import-Export",
-    "description":  "Export Meshes for OGL Lib",
+    "description":  "Export Animated Meshes for OGL Lib",
     "category":     "Import-Export"
 }
 
 if "bpy" in locals():
     import imp;
-    if "export_mesh" in locals():
-        imp.reload(export_mesh);
+    if "export_amesh" in locals():
+        imp.reload(export_amesh);
 
 import bpy
 from bpy_extras.io_utils import ExportHelper
 
 class OGLExporter(bpy.types.Operator, ExportHelper):
-    bl_idname       = "export_mesh.mesh"
-    bl_label        = "OGL Exporter"
+    bl_idname       = "export_amesh.amesh"
+    bl_label        = "OGL Animated Exporter"
     bl_options      = {'PRESET'}
     
-    filename_ext    = ".mesh"
+    filename_ext    = ".amesh"
     
     def execute(self, context):
-        from . import export_mesh
+        from . import export_amesh
         
-        return export_mesh.save(self, context, self.filepath)
+        return export_amesh.save(self, context, self.filepath)
         
 def menu_func(self, context):
-    self.layout.operator(OGLExporter.bl_idname, text="OGL Mesh Format (.mesh)")
+    self.layout.operator(OGLExporter.bl_idname, text="OGL Animated Mesh Format (.amesh)")
 
 def register():
     bpy.utils.register_module(__name__)
