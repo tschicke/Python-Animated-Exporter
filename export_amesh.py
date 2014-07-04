@@ -43,10 +43,10 @@ def save(operator, context, filepath=""):
                         parentIndex = dupIndex
                         index = i + len(startNodes)
                         
-                    tailOffset = bone.tail_local# - bone.head_local
+                    tailOffset = bone.tail_local
                     skeletonData.append((tailOffset.x, tailOffset.z, tailOffset.y, index, parentIndex))
                 else:
-                    offset = bone.tail_local - bone.head_local
+                    offset = bone.tail_local
                     index = i + len(startNodes)
                     parentIndex = -1
                     for j in range(0, i):
@@ -99,6 +99,7 @@ def save(operator, context, filepath=""):
                     weight1 = 0 if weight1 < 0.001 else weight1
                     weight2 = 0 if weight2 < 0.001 else weight2
                     
+                #Fix this so that deleting a bone won't shift indices
                 if index1 >= len(boneIndexLookup):
                     index1 = 0
                     weight1 = 0

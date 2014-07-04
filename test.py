@@ -17,8 +17,7 @@ def printFunc():
     clear()
     mesh.calc_tessface()
     
-    for vertex in mesh.vertices:
-        for group in vertex.groups:
-            print(group.group)
+    for bone in skeleton.bones:
+        print(bone.name)
 
 printFunc()
