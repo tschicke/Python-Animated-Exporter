@@ -35,7 +35,7 @@ def save(operator, context, filepath=""):
                         baseNode = bone.head_local
                         index = i + len(startNodes)
                         parentIndex = -1
-                        skeletonData.append((baseNode.x, baseNode.z, baseNode.y, index, parentIndex))
+                        skeletonData.append((baseNode.x, baseNode.z, -baseNode.y, index, parentIndex))
                         startNodes.append((baseNode.x, baseNode.y, baseNode.z, index, parentIndex))
                         parentIndex = index
                         index += 1
@@ -44,7 +44,7 @@ def save(operator, context, filepath=""):
                         index = i + len(startNodes)
                         
                     tailOffset = bone.tail_local
-                    skeletonData.append((tailOffset.x, tailOffset.z, tailOffset.y, index, parentIndex))
+                    skeletonData.append((tailOffset.x, tailOffset.z, -tailOffset.y, index, parentIndex))
                 else:
                     offset = bone.tail_local
                     index = i + len(startNodes)
@@ -53,7 +53,7 @@ def save(operator, context, filepath=""):
                         if bone.parent == armature.bones[j]:
                             parentIndex = j + len(startNodes)
                             break
-                    skeletonData.append((offset.x, offset.z, offset.y, index, parentIndex))
+                    skeletonData.append((offset.x, offset.z, -offset.y, index, parentIndex))
                 boneIndexLookup.append(i + len(startNodes))
     
     for object in bpy.data.objects:
@@ -119,14 +119,14 @@ def save(operator, context, filepath=""):
                 for i in range(0, len(face.vertices)):
                     index = face.vertices[i]
                     blenderVertex = mesh.vertices[index].co[:]
-                    outVertex = (blenderVertex[0], blenderVertex[2], blenderVertex[1])
+                    outVertex = (blenderVertex[0], blenderVertex[2], -blenderVertex[1])
                     UV = mesh.tessface_uv_textures.active.data[face.index].uv[i][:]
                     if face.use_smooth:
                         blenderNormal = mesh.vertices[index].normal[:]
-                        outNormal = (blenderNormal[0], blenderNormal[2], blenderNormal[1])
+                        outNormal = (blenderNormal[0], blenderNormal[2], -blenderNormal[1])
                     else:
                         blenderNormal = face.normal[:]
-                        outNormal = (blenderNormal[0], blenderNormal[2], blenderNormal[1])
+                        outNormal = (blenderNormal[0], blenderNormal[2], -blenderNormal[1])
                     boneIndex = tempBoneIndices[index]
                     boneWeight = tempBoneWeights[index]
                     
@@ -155,10 +155,10 @@ def save(operator, context, filepath=""):
                         indexOffset += 1
                     
                 if len(tempIndices) == 4:
-                    indices.append((tempIndices[0], tempIndices[3], tempIndices[2]))
-                    indices.append((tempIndices[0], tempIndices[2], tempIndices[1]))
+                    indices.append((tempIndices[0], tempIndices[1], tempIndices[2]))
+                    indices.append((tempIndices[0], tempIndices[2], tempIndices[3]))
                 else:
-                    indices.append((tempIndices[0], tempIndices[2], tempIndices[1]))
+                    indices.append((tempIndices[0], tempIndices[1], tempIndices[2]))
         
         file = open(filepath, 'w')
         fw = file.write
@@ -185,6 +185,13 @@ def save(operator, context, filepath=""):
         
         for node in skeletonData:
             fw("s %f %f %f %i %i\n" % node[:])
+         
+        for i in range(0, len(skeletonData)):
+            boneData = skeletonData[i];
+            if(boneData[4] != -1):
+                print("Child", boneData)
+                print("Parent ", skeletonData[boneData[4]])
+                print()
         
         file.close
         
