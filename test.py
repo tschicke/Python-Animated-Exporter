@@ -9,7 +9,7 @@ def clear():
 
 import bpy
 
-mesh = bpy.data.objects['Cylinder'].data
+mesh = bpy.data.objects['Cube'].data
 skeleton = bpy.data.objects['Armature'].data
 
 def printFunc():
@@ -17,7 +17,9 @@ def printFunc():
     clear()
     mesh.calc_tessface()
     
-    for bone in skeleton.bones:
-        print(bone.name)
+    for vertex in mesh.vertices:
+        for group in vertex.groups:
+            print(group.group)
+    print("\n\n", len(skeleton.bones))
 
 printFunc()

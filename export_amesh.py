@@ -54,6 +54,7 @@ def save(operator, context, filepath=""):
                             parentIndex = j + len(startNodes)
                             break
                     skeletonData.append((offset.x, offset.z, -offset.y, index, parentIndex))
+                print(len(startNodes))
                 boneIndexLookup.append(i + len(startNodes))
     
     for object in bpy.data.objects:
@@ -185,13 +186,6 @@ def save(operator, context, filepath=""):
         
         for node in skeletonData:
             fw("s %f %f %f %i %i\n" % node[:])
-         
-        for i in range(0, len(skeletonData)):
-            boneData = skeletonData[i];
-            if(boneData[4] != -1):
-                print("Child", boneData)
-                print("Parent ", skeletonData[boneData[4]])
-                print()
         
         file.close
         
