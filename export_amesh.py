@@ -161,6 +161,7 @@ def save(operator, context, filepath=""):
                 else:
                     indices.append((tempIndices[0], tempIndices[1], tempIndices[2]))
         
+        print(filepath)
         file = open(filepath, 'w')
         fw = file.write
         fw("amdl\n")

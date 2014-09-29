@@ -17,9 +17,24 @@ def printFunc():
     clear()
     mesh.calc_tessface()
     
+    file = open("C:\\Users\\Tyler\\AppData\\Roaming\\Blender Foundation\\Blender\\2.70\\scripts\\addons\\io_mesh_animated\\test.txt", 'w')
+    fw = file.write
+    
     for vertex in mesh.vertices:
+        print("Coord ", vertex.co[0])
         for group in vertex.groups:
-            print(group.group)
-    print("\n\n", len(skeleton.bones))
+            print("Tail Local ", skeleton.bones[group.group].tail_local[0])
+            
+    for i in range(0, len(skeleton.bones)):
+        bone = skeleton.bones[i]
+        fw("%i\n" % i)
+        fw(bone.name + "\n")
+        fw("head       %f %f %f\n" % bone.head[:])
+        fw("head local %f %f %f\n" % bone.head_local[:])
+        fw("tail       %f %f %f\n" % bone.tail[:])
+        fw("tail local %f %f %f\n" % bone.tail_local[:])
+    
+    file.close()
+    
 
 printFunc()

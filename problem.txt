@@ -1,0 +1,1 @@
+When exporting, the order of the vertex groups for the weight painting needs to be in the same order as the bones were created (print every bone name in order, and match vertex group order to that).
